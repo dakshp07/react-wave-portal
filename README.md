@@ -1,5 +1,6 @@
 # Wave Hand Project
 **Backend is the root repo**
+
 **Frontend code is in `react-frontend-wave-portal`**
 
 In our last [repo](https://github.com/dakshp07/building-with-buildspace) we created a wave contract which increments the wave and returns the total no of waves. We also compiled, tested it using the script.js files and then used the node commands to deploy it on a local blockchain.
