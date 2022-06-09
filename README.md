@@ -3,55 +3,41 @@
 
 **Frontend code is in `react-frontend-wave-portal`**
 
-In our last [repo](https://github.com/dakshp07/building-with-buildspace) we created a wave contract which increments the wave and returns the total no of waves. We also compiled, tested it using the script.js files and then used the node commands to deploy it on a local blockchain.
+In the [master](https://github.com/dakshp07/react-wave-portal/tree/master) branch we worked on normal frontend web app where you can click on button to increment wave value by one but now we are allowing the users to send a new message with their wave and also displaying them in the frontend.
 
-Now we will be going a step further and create a frontend to deploy it for the users who can use the web interface to talk to outr smart contract but in order to talk to it we have to first deploy the contract on a testnet. Here we will be using Rinkeby Testnet. We can also use Ropsten or any other testnet.
+We will be making some changes in the contract and deploying it again on Rinkeby Testnet.
 
-**Hold on:** Before deploying on testnet we have to first create a basic react appliction and set up metamask
-react basic app can be found [here](https://github.com/buildspace/waveportal-starter-project?utm_source=buildspace.so&utm_medium=buildspace_project)
-metamask setup can be found [here](https://metamask.io/download.html?utm_source=buildspace.so&utm_medium=buildspace_project)
+# Changes in contract
+Storing messages in arrays using structs. We will be also using events and emit to display the user with all the changes.
 
-# Deploy on Rinkeby Testnet
-Go ahead and close the terminal with your local blockchain network running which is where you ran npx hardhat node. We won't need it anymore ;). I mainly just wanted to show you how deploying works locally.
+# Test the updated contract
+Whenever we change our contract, we want to change run.js to test the new functionality we added. That's how we know it's working how we want!
+**Output:**
+<img src="https://i.imgur.com/djGAfbN.png">
 
-Now we're going to be doing the real deal, deploying to the actual blockchain.
 
-Go ahead and make an account with Alchemy [here](https://alchemy.com/?r=b93d1f12b8828a57?utm_source=buildspace.so&utm_medium=buildspace_project).
+# Re-Deploy on Rinkeby Testnet
+So, now that we've updated our contract we need to do a few things:
 
-Next up is to get some test eth through faucet. Checkout the links for faucet [MyCrypto](https://app.mycrypto.com/faucet?utm_source=buildspace.so&utm_medium=buildspace_project), [Official Rinkeby](https://faucet.rinkeby.io/?utm_source=buildspace.so&utm_medium=buildspace_project), [Chainlink](https://faucets.chain.link/rinkeby?utm_source=buildspace.so&utm_medium=buildspace_project). 
+1. We need to deploy it again.
 
-Now next we have to edit the `hardhat.config.js` file by doing this
-```js
-require("@nomiclabs/hardhat-waffle");
+2. We need to update the contract address on our frontend.
 
-module.exports = {
-  solidity: "0.8.0",
-  networks: {
-    rinkeby: {
-      url: "YOUR_ALCHEMY_API_URL",
-      accounts: ["YOUR_PRIVATE_RINKEBY_ACCOUNT_KEY"]
-    },
-  },
-};
-```
-here, `"YOUR_ALCHEMY_API_URL"` is the url that you get from "View Key" option in Alchemy Dashboard
-and `"YOUR_PRIVATE_RINKEBY_ACCOUNT_KEY"` is the metmask private key which can be done by doing this:
+3. We need to update the abi file on our frontend. 
 
-`Accessing your private key can be done by opening MetaMask, change the network to "Rinkeby Test Network" and then click the three dots and select "Account Details" > "Export Private Key"`
+People constantly forget to do these 3 steps when they change their contract. Don't forget lol.
 
-Run this command from the root directory of project. Notice all we do is change it from localhost to rinkeby.
+Why do we need to do all this? Well, it's because smart contracts are immutable. They can't change. They're permanent. That means changing a contract requires a full redeploy. This will also reset all the variables since it'd be treated as a brand new contract. That means we'd lose all our wave data if we wanted to update the contract's code.
 
-```shell
-npx hardhat run scripts/deploy.js --network rinkeby
-```
-**Here's a sample output:**
-```
-Deploying contracts with the account: 0xF79A3bb8d5b93686c4068E2A97eAeC5fE4843E7D
-Account balance: 3198297774605223721
-WavePortal address: 0xd5f08a0ae197482FA808cE84E00E97d940dBD26E
-```
+So what you'll need to do now is:
 
-You can use the address to visit your contract on etherscan. Here's my contract on etherescan: https://rinkeby.etherscan.io/address/0x0225CE65718f5AB3228667c827634380C2CBE024
+1. Deploy again using `npx hardhat run scripts/deploy.js --network rinkeby`
+
+2. Change `contractAddress` in `App.js` to be the new contract address we got from the step above in the terminal just like we did before the first time we deployed.
+
+3. Get the updated abi file from `artifacts` like we did before and copy-paste it into Replit just like we did before.
+
+You can use the address to visit your contract on etherscan. Here's my updated contract on etherescan: https://rinkeby.etherscan.io/address/0xD9DcfA337fc9D8Ea616a1b0770d74Ba1Da7CE6C5
 
 
 # Using React to draw the frontend
@@ -61,6 +47,8 @@ we will make changes in the `react-frontend-wave-portal/src/app.js` to make our 
 I have added all the comments which help us understand the code of react files.
 
 # Final Output:
-<img src="https://i.imgur.com/koMUwKD.png">
+I write the message `hey there` and wave to the user, now on the left panel it increments the count and asks me to pay the gas fees
+<img src="https://i.imgur.com/k41RTv3.png">
 
-The right panel shows the wavescnt, the txid and how the wave cnt is increasing with every wave.
+Once the transaction is complete it gets added to the data that we are displaying on the frontend.
+<img src="https://i.imgur.com/ZlYJUcR.png">

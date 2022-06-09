@@ -10,12 +10,21 @@ const main=async()=>{
 
     let waveCnt;
     waveCnt=await waveCon.totalWaves(); // calling the totalWaves() function from my contract
+    console.log(waveCnt.toNumber()); // dislpaying the wave cnt
 
-    // let waveTxn=await waveCon.waveToUs(); here i was waving to myself so i just changed that so that another radon can wave
-    let waveTxn=await waveCon.connect(randomPerson).waveToUs(); // telling the random guy to wave to me through the waveToUs() function from my contract
-    await waveTxn.wait();
+    // now we will try to send a message with the wave
+    let waveTxn=await waveCon.wave("A message!");
+    await waveTxn.wait(); // wait for the transaction to be mined
+
+    // let waveTxn=await waveCon.waveToUs(); here i was waving to myself so i just changed that so that another radom can wave
+    waveTxn=await waveCon.connect(randomPerson).wave("message from random!"); // telling the random guy to wave to me through the waveToUs() function from my contract
+    await waveTxn.wait(); // wait for the transaction to be mined
+
+    let allWaves = await waveCon.getAllWaves();
+    console.log(allWaves);
 
     waveCnt=await waveCon.totalWaves();  // calling the totalWaves() function from my contract
+    console.log(waveCnt);
 };
 const runmain=async()=>{
     try{
