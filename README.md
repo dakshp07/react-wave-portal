@@ -127,5 +127,5 @@ This is super powerful. It lets us create web apps that update in real-time :). 
 I want you to hack around with this and build whatever you want :).
 
 # Final Output:
-I write the message `hey` and wave to the user, now on the left panel it increments the count and asks me to pay the gas fees **BUT** this time I **DO NOT REFRESH** and I can see the transaction details on the frontend.
+I write the message `hey` and wave to the user, now on the left panel it increments the count and asks me to pay the gas fees **BUT** this time I **DO NOT REFRESH** and I can see the transaction details on our frontend.
 <img src="https://i.imgur.com/BaFp471.png">
