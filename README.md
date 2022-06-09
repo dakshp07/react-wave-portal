@@ -63,4 +63,4 @@ I have added all the comments which help us understand the code of react files.
 # Final Output:
 <img src="https://i.imgur.com/koMUwKD.png">
 
-The right panel shows the wavescnt, the txid and how the wave cnt is increasing with every wave.
+The right panel shows the wavescnt, the txid and how the wave count is increasing with every wave.
