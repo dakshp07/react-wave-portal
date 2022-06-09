@@ -50,5 +50,5 @@ I have added all the comments which help us understand the code of react files.
 I write the message `hey there` and wave to the user, now on the left panel it increments the count and asks me to pay the gas fees
 <img src="https://i.imgur.com/k41RTv3.png">
 
-Once the transaction is complete it gets added to the data that we are displaying on the frontend.
+Once the transaction is complete, we **refresh the web page** and we can see that it gets added to the data that we are displaying on the frontend.
 <img src="https://i.imgur.com/ZlYJUcR.png">
