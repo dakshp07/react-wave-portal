@@ -64,3 +64,6 @@ I have added all the comments which help us understand the code of react files.
 <img src="https://i.imgur.com/koMUwKD.png">
 
 The right panel shows the wavescnt, the txid and how the wave count is increasing with every wave.
+
+# What's Next
+Check out the other branch in this repo [here](https://github.com/dakshp07/react-wave-portal/tree/wave-with-msg) to see how we build a contract where now users can wave with a message and we will display that message with address, timestamp to the frontend.
