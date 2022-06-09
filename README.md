@@ -119,7 +119,7 @@ useEffect(() => {
 
 **Check comments in `App.js` to see how we implement things**
 
-At the very bottom you'll see the magic bit of code I added :). Here, I can actually "listen" when my contract throws the NewWave event. Like a webhook :). Pretty dope, right?
+At the very bottom you'll see the magic bit of code that I added :). Here, I can actually "listen" when my contract throws the NewWave event. Like a webhook :). Pretty dope, right?
 
 I can also access that data on that event like message and from. Here, I do a setAllWaves when I get this event which means the user's message will automatically be appended to my allWaves array when we receive the event and our UI will update!
 
