@@ -5,7 +5,7 @@ import abi from "./utils/WavePortal.json"; // the json file from artifacts/contr
 
 export default function App() {
   const [currAccount, setCurrentAccount] = React.useState("");
-  const contractAddress = "0xD9DcfA337fc9D8Ea616a1b0770d74Ba1Da7CE6C5"; // the deployed contract address
+  const contractAddress = "0x8d749596922f66d63348C8cec707e076723A4864"; // the deployed contract address
   const contractABI = abi.abi; // using json file as an abi
   const [currCount, setCurrCount] = React.useState(""); // setting curr count if not present from before or accessing the already existing count
   const[message, setMessage] = React.useState(""); // setting user message for the wave
@@ -54,7 +54,11 @@ const wave = async () => { // function that will talk with our contract ie incre
   let count = await waveportalContract.totalWaves()  // retrieve no of waves using the totalWaves() function of our contract
   console.log("Retrieved total waves", count.toNumber())
 
-  const waveTxn = await waveportalContract.wave(message) // increment +1 to the no of waves and also put the message using the wave() function of our contract
+  // When you try to "wave" now, you may notice you sometimes get an error that looks something like "out of gas". Why?
+  // Well, basically Metamask will try to estimate how much gas a transaction will use. But, sometimes it's wrong! In this case, it's made more difficult by the fact that we have some randomness involved. So, if the contract sends a prize then the waver needs to pay more gas since we're running more code.
+  // Estimating gas is a hard problem and an easy workaround for this (so our users don't get angry when a transaction fails) is to set a limit.
+  const waveTxn = await waveportalContract.wave(message, {gasLimit: 300000}) // increment +1 to the no of waves and also put the message using the wave() function of our contract
+  
   // When we run this, you'll see that total wave count is increased by 1. You'll also see that Metamask pops us and asks us to pay "gas" which we pay for using our fake $.
   console.log("Mining...", waveTxn.hash)  // displaying the transaction id
   await waveTxn.wait() // waiting for the transaction to finish
@@ -88,7 +92,31 @@ async function getAllWaves() {
 
 React.useEffect(()=> {
   checkIfWalletIsConnected();
-}, [])
+  let wavePortalContract;
+  const onNewWave=(from, timestamp, message)=>{
+    console.log("NewWave", from, timestamp, message);
+    setAllWaves(prevState=>[
+      ...prevState,
+      {
+        address: from,
+        timestamp: new Date(timestamp*1000),
+        message: message,
+      },
+    ]);
+  };
+  if (window.ethereum) {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
+    wavePortalContract.on("NewWave", onNewWave);
+  }
+  return () => {
+    if (wavePortalContract) {
+      wavePortalContract.off("NewWave", onNewWave);
+    }
+  };
+}, []);
   
 return (
   <div className="mainContainer">
